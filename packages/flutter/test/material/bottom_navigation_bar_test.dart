@@ -3126,6 +3126,49 @@ void main() {
 
     expect(tester.getSemantics(find.text('B')), isSemantics(label: 'B\nTab 2 of 2'));
   });
+
+  testWidgets('BottomNavigationBar splashRadius test', (WidgetTester tester) async {
+    // Test default splashRadius of 25.0
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'AC'),
+              BottomNavigationBarItem(icon: Icon(Icons.access_alarm), label: 'Alarm'),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    Iterable<InkResponse> inkResponses = tester.widgetList<InkResponse>(find.byType(InkResponse));
+    expect(inkResponses.length, 2);
+    for (final inkResponse in inkResponses) {
+      expect(inkResponse.radius, 25.0);
+    }
+
+    // Test custom splashRadius
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            splashRadius: 30.0,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'AC'),
+              BottomNavigationBarItem(icon: Icon(Icons.access_alarm), label: 'Alarm'),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    inkResponses = tester.widgetList<InkResponse>(find.byType(InkResponse));
+    expect(inkResponses.length, 2);
+    for (final inkResponse in inkResponses) {
+      expect(inkResponse.radius, 30.0);
+    }
+  });
 }
 
 Widget boilerplate({
