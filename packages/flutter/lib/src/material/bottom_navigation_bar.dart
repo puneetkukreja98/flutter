@@ -246,6 +246,7 @@ class BottomNavigationBar extends StatefulWidget {
     this.enableFeedback,
     this.landscapeLayout,
     this.useLegacyColorScheme = true,
+    this.splashRadius = 25.0,
   }) : assert(items.length >= 2),
        assert(
          items.every((BottomNavigationBarItem item) => item.label != null),
@@ -260,6 +261,7 @@ class BottomNavigationBar extends StatefulWidget {
        ),
        assert(selectedFontSize >= 0.0),
        assert(unselectedFontSize >= 0.0),
+       assert(splashRadius == null || splashRadius >= 0.0),
        selectedItemColor = selectedItemColor ?? fixedColor;
 
   /// Defines the appearance of the button items that are arrayed within the
@@ -438,6 +440,11 @@ class BottomNavigationBar extends StatefulWidget {
   /// To opt-in the new theming logic set the flag to `false`
   final bool useLegacyColorScheme;
 
+  /// The splash radius of the [BottomNavigationBarItem]s' ink response.
+  ///
+  /// Defaults to 25.0.
+  final double? splashRadius;
+
   @override
   State<BottomNavigationBar> createState() => _BottomNavigationBarState();
 }
@@ -466,6 +473,7 @@ class _BottomNavigationTile extends StatelessWidget {
     required this.mouseCursor,
     required this.enableFeedback,
     required this.layout,
+    this.splashRadius,
   });
 
   final BottomNavigationBarType type;
@@ -487,6 +495,7 @@ class _BottomNavigationTile extends StatelessWidget {
   final MouseCursor mouseCursor;
   final bool enableFeedback;
   final BottomNavigationBarLandscapeLayout layout;
+  final double? splashRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -568,6 +577,7 @@ class _BottomNavigationTile extends StatelessWidget {
       onTap: onTap,
       mouseCursor: mouseCursor,
       enableFeedback: enableFeedback,
+      radius: splashRadius,
       child: Padding(
         padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
         child: _Tile(
@@ -1086,6 +1096,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBar> with TickerPr
           indexLabel: localizations.tabLabel(tabIndex: i + 1, tabCount: widget.items.length),
           mouseCursor: effectiveMouseCursor,
           layout: layout,
+          splashRadius: widget.splashRadius,
         ),
       );
     }
